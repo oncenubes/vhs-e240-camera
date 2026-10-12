@@ -110,7 +110,8 @@ footer{padding:17px 2px 0;color:#555963;font:9px 'DM Mono',monospace;letter-spac
     const d = new Date();
     return `${['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'][d.getMonth()]}. ${pad(d.getDate())} ${d.getFullYear()}`;
   }
-  dateStamp.textContent = dateText();
+  dateStamp.textContent = '';
+dateStamp.style.display = 'none';
   function toast(message) {
     const el = document.querySelector('#toast'); el.textContent = message; el.classList.add('show');
     clearTimeout(toast._t); toast._t = setTimeout(() => el.classList.remove('show'), 2800);
