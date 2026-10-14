@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#08090b">
+<title>VHS E-240 — v0.9 Interface</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+:root{color-scheme:dark;--bg:#08090b;--panel:#111317;--line:#292c32;--muted:#858995;--white:#f4f4f1;--red:#ff424b;--orange:#ff9d46}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% 0%,#1a1d23 0%,var(--bg) 55%);color:var(--white);font-family:'Space Grotesk',system-ui,sans-serif;min-height:100vh}button,input{font:inherit}button{cursor:pointer}.app{max-width:820px;margin:0 auto;padding:env(safe-area-inset-top,12px) 18px 24px}.topbar{height:70px;display:flex;align-items:center;justify-content:space-between}.brand{display:flex;align-items:center;gap:12px}.brand-mark{font-size:20px;font-weight:700;letter-spacing:-2px;border:2px solid #eee;padding:4px 6px;box-shadow:3px 3px 0 #f49a43}.brand strong{display:block;font-size:14px;letter-spacing:2px}.brand small{display:block;color:var(--muted);font:9px 'DM Mono',monospace;letter-spacing:1.5px;margin-top:4px}.icon-btn{border:1px solid #363941;background:#17191e;color:white;border-radius:50%;width:42px;height:42px;font-size:24px}.view-wrap{margin-top:6px}.viewfinder{position:relative;width:100%;aspect-ratio:4/3;max-height:62vh;background:#020304;overflow:hidden;border:1px solid #393b40;border-radius:15px;box-shadow:0 15px 50px #0009}video{display:none}canvas{width:100%;height:100%;display:block;object-fit:cover}.view-overlay{position:absolute;inset:0;pointer-events:none;padding:14px 14px 12px;display:flex;flex-direction:column;justify-content:space-between;font:11px 'DM Mono',monospace;letter-spacing:1px;text-shadow:0 1px 4px #000}.view-top,.view-bottom{display:flex;justify-content:space-between;align-items:center}.view-bottom{font-size:12px}.view-bottom span:first-child{display:inline-block;color:#ffbd79;font-weight:500;letter-spacing:1px;text-shadow:0 1px 4px #000,0 0 2px #000}#recBadge{display:flex;align-items:center;gap:6px;opacity:.35}#recBadge i{display:block;width:7px;height:7px;border-radius:50%;background:var(--red)}#recBadge.live{opacity:1}#recBadge.live i{animation:blink 1s infinite}@keyframes blink{50%{opacity:.15}}.permission{position:absolute;inset:0;background:linear-gradient(140deg,#11151bdd,#050608f2);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px}.permission.hidden{display:none}.camera-symbol{font-size:35px;color:var(--orange);margin-bottom:10px}.permission strong{font-size:18px}.permission p{font-size:12px;color:#a8abb3;max-width:240px;line-height:1.5}.primary{margin-top:10px;border:0;border-radius:5px;background:var(--orange);color:#17100a;font-weight:700;font-size:11px;letter-spacing:1px;padding:13px 18px}.statusline{display:flex;justify-content:space-between;color:#9397a1;font:10px 'DM Mono',monospace;letter-spacing:1px;padding:10px 2px 0}.controls{margin-top:18px;background:linear-gradient(145deg,#15171c,#0d0f12);border:1px solid #252830;border-radius:15px;padding:16px}.main-controls{display:flex;align-items:center;justify-content:space-around}.round-btn{width:56px;height:56px;border:1px solid #343740;border-radius:50%;background:#1c1f25;color:#ddd;font-size:22px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px}.round-btn small{font:8px 'DM Mono',monospace;letter-spacing:.5px;color:#a6a9b1}.record-btn{width:76px;height:76px;border:1px solid #9d3439;border-radius:50%;background:#291518;display:grid;place-items:center;box-shadow:0 0 0 5px #242126,0 0 25px #ff354022}.record-btn span{width:46px;height:46px;border-radius:50%;background:var(--red);box-shadow:inset 0 2px 5px #ffb1b1,0 3px 12px #ff283344;transition:.2s}.record-btn.recording span{border-radius:7px;width:28px;height:28px}.record-label{text-align:center;font:9px 'DM Mono',monospace;letter-spacing:1.5px;color:#a4a7b0;margin:12px 0 20px}.settings{border-top:1px solid #2b2e35;padding-top:15px}.setting-head{display:flex;justify-content:space-between;color:#aeb1b9;font:10px 'DM Mono',monospace;letter-spacing:1px;margin:0 0 9px}.setting-head strong{color:var(--orange)}input[type=range]{width:100%;accent-color:var(--orange);margin:0 0 18px}.preset-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.preset{min-height:54px;padding:9px 5px;background:#191b20;color:#9296a0;border:1px solid #30333a;border-radius:7px;font:9px 'DM Mono',monospace;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;line-height:1.15}.preset .preset-name{font-weight:500;letter-spacing:.3px}.preset .preset-desc{font-size:7px;color:#737782;letter-spacing:.35px;text-align:center}.preset.active{border-color:var(--orange);color:#ffd3a6;background:#292018;box-shadow:inset 0 0 0 1px #ff9d4622}.preset.active .preset-desc{color:#d5a879}.preset[data-preset="nightvision"]{border-color:#315c3c;background:#111d16}.preset[data-preset="nightvision"] .preset-name{color:#9cffb0}.preset[data-preset="nightvision"].active{border-color:#72ff91;background:#102619;box-shadow:inset 0 0 0 1px #72ff9133}.preset[data-preset="nightvision"].active .preset-desc{color:#80c991}.preset[data-preset="nightvisionpro"]{border-color:#315c3c;background:#111d16}.preset[data-preset="nightvisionpro"] .preset-name{color:#9cffb0}.preset[data-preset="nightvisionpro"].active{border-color:#72ff91;background:#102619;box-shadow:inset 0 0 0 1px #72ff9133}.preset[data-preset="nightvisionpro"].active .preset-desc{color:#80c991}.toggles{display:flex;justify-content:space-between;gap:8px;margin-top:17px;flex-wrap:wrap}.toggles label{font:9px 'DM Mono',monospace;letter-spacing:.5px;color:#b9bbc2;display:flex;align-items:center;gap:6px}.toggles input{accent-color:var(--orange)}.pro-controls{margin-top:16px;padding:13px;border:1px solid #285237;border-radius:9px;background:linear-gradient(145deg,#0d1b12,#0b100d)}.pro-controls[hidden]{display:none}.pro-title{font:10px "DM Mono",monospace;letter-spacing:1px;color:#8dffad;margin-bottom:14px}.pro-controls input[type=range]{accent-color:#65ff8c}.pro-controls .setting-head strong{color:#8dffad}.camera-tools{margin:16px 0;padding:13px;border:1px solid #30333a;border-radius:9px;background:#101216}.tool-title{font:10px "DM Mono",monospace;letter-spacing:1px;color:#e8e9ed;margin-bottom:10px}.tool-row{display:flex;gap:7px;flex-wrap:wrap}.tool-btn{flex:1;min-width:58px;border:1px solid #363941;border-radius:7px;background:#1a1d22;color:#c8cbd2;padding:10px 7px;font:10px "DM Mono",monospace}.tool-btn.active{border-color:var(--orange);color:#ffd3a6;background:#292018}.tool-note{font:9px "DM Mono",monospace;color:#858995;line-height:1.5;margin:9px 0 0}.tool-btn:disabled{opacity:.4}.flash-screen{position:fixed;inset:0;background:white;opacity:0;pointer-events:none;z-index:20;transition:opacity .12s}.flash-screen.on{opacity:1}footer{padding:17px 2px 0;color:#555963;font:9px 'DM Mono',monospace;letter-spacing:1px;display:flex;justify-content:space-between}#toast{position:fixed;bottom:25px;left:50%;transform:translateX(-50%);background:#f4f0e9;color:#151515;border-radius:8px;padding:11px 16px;font-size:12px;box-shadow:0 5px 25px #0008;opacity:0;pointer-events:none;transition:opacity .2s;max-width:90vw;text-align:center;z-index:10}#toast.show{opacity:1}@media(min-width:700px){.app{padding-top:22px}.viewfinder{aspect-ratio:16/10;max-height:none}.controls{padding:20px 24px}}@media(max-width:380px){.app{padding-left:11px;padding-right:11px}.controls{padding:13px}.preset{font-size:8px}.toggles label{font-size:8px}}
+
+/* VHS E-240 v0.9 camera-inspired interface */
+body{background:#111216}
+.app{max-width:560px;padding:calc(env(safe-area-inset-top,10px) + 8px) 14px calc(env(safe-area-inset-bottom,12px) + 18px)}
+.topbar{height:0;overflow:hidden;position:absolute}
+.view-wrap{margin-top:0;position:relative}
+.viewfinder{aspect-ratio:9/16;max-height: min(61vh,720px);min-height:360px;margin:0 auto;border:7px solid #08090b;border-radius:38px;background:#050505;box-shadow:0 0 0 1px #292a2e,0 16px 45px #0008}
+canvas{object-fit:contain}
+.view-overlay{display:none!important;padding:16px 15px}
+.statusline{padding:8px 8px 0;font-size:9px}
+.controls{margin-top:12px;padding:0;background:none;border:0;border-radius:0;box-shadow:none}
+.main-controls{display:grid;grid-template-columns:58px 48px minmax(92px,1fr) 120px;gap:9px;align-items:center;justify-content:stretch}
+.round-btn{width:48px;height:48px;border-radius:15px;background:linear-gradient(#292a2d,#17181b);box-shadow:inset 0 1px #ffffff16;font-size:20px}
+.round-btn small{font-size:7px}
+#galleryBtn{width:58px;height:58px}
+#snapshotBtn{width:48px;height:48px}
+.record-btn{width:88px;height:88px;justify-self:center;border:4px solid #e6e6e8;border-radius:50%;background:linear-gradient(#fff,#c9c9cd);box-shadow:0 0 0 4px #242529}
+.record-btn span{width:0;height:0;border-radius:50%;background:#ff4a32;box-shadow:none}
+.record-btn:not(.recording) span{width:66px;height:66px;background:linear-gradient(#fff,#dedee1);box-shadow:inset 0 2px 4px #fff}
+.record-btn.recording span{width:28px;height:28px;background:#ff4938;border-radius:7px}
+.record-label{margin:6px 0 10px;color:#9c9da3;font-size:8px}
+.camera-tools{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 12px}
+.camera-tools .tool-title,.camera-tools .tool-note{display:none}
+#zoomLegacyChoices{display:none!important}
+#zoomChoices{grid-column:4;grid-row:1}
+#zoomChoices button{width:50%;}
+#zoomChoices{margin-left:auto;display:flex;gap:0;border:1px solid #4b4c50;border-radius:17px;overflow:hidden;background:#25262a}
+#zoomChoices .tool-btn{min-width:48px;padding:11px 10px;border:0;border-radius:0;background:transparent;font-size:20px;color:#f0f0f2}
+#zoomChoices .tool-btn.active{background:#3a3b40;color:#fff}
+#flashBtn{position:absolute;z-index:5;left:18px;top:16px;width:48px;height:48px;border-radius:50%;padding:0;font-size:0;background:#333438d9;border:0;color:#fff;backdrop-filter:blur(8px)}
+#flashBtn:before{content:"ϟ";font-size:27px}
+#flashBtn.active{background:#e7b933;color:#171717}
+#flipBtn{position:absolute;z-index:5;right:14px;bottom:12px;width:48px;height:48px;border:0;border-radius:50%;background:#333438df;font-size:0}
+#flipBtn:before{content:"↻";font-size:28px}
+.settings{border:0;padding:0}
+.setting-head,.settings>input,.toggles{display:none}
+.settings>.setting-head:nth-of-type(2){display:none}
+.preset-row{display:flex;gap:10px;overflow-x:auto;padding:4px 2px 12px;scroll-snap-type:x mandatory;scrollbar-width:none}
+.preset-row::-webkit-scrollbar{display:none}
+.preset{flex:0 0 76px;min-height:112px;height:112px;padding:6px 4px;border-radius:9px;border:2px solid transparent;background:linear-gradient(155deg,#28212a,#101115);scroll-snap-align:center;position:relative;overflow:hidden}
+.preset:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 45% 35%,#ffb044aa,transparent 35%),linear-gradient(130deg,transparent 30%,#ed4b78aa,transparent 65%);opacity:.75}
+.preset:nth-child(2):before{background:linear-gradient(145deg,#c6a47c,#473b36 50%,#17191b)}
+.preset:nth-child(3):before{background:linear-gradient(150deg,#202a46,#090b13 65%,#6841a0)}
+.preset:nth-child(4):before{background:linear-gradient(140deg,#e5e5e1,#696b70 55%,#202125)}
+.preset:nth-child(5):before,.preset:nth-child(6):before{background:linear-gradient(145deg,#b9ffb9,#2e8f55 50%,#07150d)}
+.preset.active{border-color:#ff563e;box-shadow:0 0 0 1px #ff563e}
+.preset .preset-name,.preset .preset-desc{position:relative;z-index:1;color:#fff;text-shadow:0 1px 4px #000;font-size:10px}
+.preset .preset-desc{font-size:7px}
+.preset .preset-name{margin-top:auto}
+.pro-controls{margin:4px 0 12px;padding:12px;border:1px solid #292b30;border-radius:12px;background:#17181c}
+.pro-controls:not([hidden]){display:block}
+.pro-title{font:9px 'DM Mono',monospace;color:#aeb0b8;margin-bottom:10px}
+.pro-controls .setting-head{display:flex!important;margin-top:8px}
+.pro-controls input[type=range]{display:block!important;margin-bottom:8px}
+.bottom-nav{display:flex;justify-content:center;align-items:center;gap:0;margin:16px auto 0;padding:8px 12px;width:min(100%,360px);border:1px solid #3b3c40;border-radius:40px;background:linear-gradient(#2a2b2f,#1b1c20);box-shadow:inset 0 1px #ffffff12}
+.bottom-nav button{flex:1;border:0;background:transparent;color:#8f9096;font-size:25px;height:48px;border-radius:25px}
+.bottom-nav button.active{color:#ff563e}
+.bottom-nav button small{display:block;font:7px 'DM Mono',monospace;letter-spacing:.5px;margin-top:2px}
+#formatBtn{position:absolute;z-index:5;left:14px;top:78px;border:0;border-radius:24px;background:#333438d9;color:#fff;padding:8px 11px;font:12px 'DM Mono',monospace;backdrop-filter:blur(8px)}
+#formatSelect{position:absolute;z-index:7;left:14px;top:122px;max-width:190px;background:#191a1e;color:#fff;border:1px solid #45464b;border-radius:12px;padding:10px;font:12px 'DM Mono',monospace}
+#formatSelect[hidden]{display:none}
+#mediaPicker{display:none}
+#editorPanel,#libraryPanel{display:none;margin-top:12px;padding:14px;border:1px solid #2d2f34;border-radius:14px;background:#17181c}
+#editorPanel.active,#libraryPanel.active{display:block}
+#editorPanel h3,#libraryPanel h3{font-size:13px;margin:0 0 8px}
+#editorPanel p,#libraryPanel p{font-size:11px;color:#a4a6ae;line-height:1.5}
+#editorFiles{font-size:11px;color:#c6c7cc;white-space:pre-wrap}
+footer{margin-top:14px}
+@media(max-height:760px){.viewfinder{max-height:54vh;min-height:300px}.preset{height:92px;min-height:92px}}
+
+</style>
+</head>
+<body>
+<main class="app">
+<header class="topbar"><div class="brand"><span class="brand-mark">VHS</span><div><strong>E-240</strong><small>ANALOG VIDEO SYSTEM</small></div></div></header>
+<section class="view-wrap"><div class="viewfinder"><button id="flashBtn" class="tool-btn" aria-pressed="false" title="Activar o desactivar flash">FLASH</button><button id="formatBtn" type="button">9:16 ▾</button><select id="formatSelect" hidden aria-label="Formato de grabación"><option value="9:16">9:16 Vertical</option><option value="3:4">3:4 Vertical</option><option value="4:3">4:3 Clásico</option><option value="16:9">16:9 Horizontal</option><option value="1:1">1:1 Cuadrado</option><option value="2.39:1">2.39:1 Cinemático</option></select><video id="sourceVideo" autoplay playsinline muted></video><canvas id="outputCanvas"></canvas><div class="view-overlay" aria-hidden="true" style="display:none"></div><div id="permissionMessage" class="permission"><div class="camera-symbol">▣</div><strong>Tu cinta está esperando</strong><p>Activa la cámara para comenzar a grabar.</p><button id="startBtn" class="primary">ENCENDER CÁMARA</button></div></div><div class="statusline"><span id="statusText">CAM: STANDBY</span><span id="timer">00:00:00</span><span id="qualityLabel">HQ / VHS</span></div></section>
+<section class="controls"><div class="main-controls"><button id="importBtn" class="round-btn" title="Importar fotos y videos">▧<small>IMPORTAR</small></button><button id="snapshotBtn" class="round-btn" title="Capturar foto">▣</button><button id="recordBtn" class="record-btn" aria-label="Grabar"><span></span></button><div id="zoomChoices"><button id="zoomOut" class="tool-btn" type="button" aria-label="Alejar zoom">−</button><button id="zoomIn" class="tool-btn" type="button" aria-label="Acercar zoom">+</button></div><button id="galleryBtn" class="round-btn" title="Biblioteca de capturas" style="display:none">▧<small>ARCHIVO</small></button></div><div class="record-label" id="recordLabel">PULSA PARA GRABAR</div>
+<div class="camera-tools"><div class="tool-title">ZOOM · ENCUADRE</div><div class="tool-row" id="zoomLegacyChoices" hidden></div><p class="tool-note" id="zoomNote">Intentará usar una cámara física compatible cuando Safari la exponga. Si no es posible, usará zoom digital como alternativa.</p><p class="tool-note" id="flashNote" style="display:none">El control del LED depende de Safari.</p><div class="setting-head" style="display:flex!important;margin-top:12px">ESTILO DE AUDIO</div><select id="audioStyleSelect" class="tool-btn" style="width:100%;text-align:left"><option value="normal">Micrófono normal</option><option value="dcr">Sony DCR-TRV351 · simulación</option></select><p class="tool-note">El estilo Sony es una simulación con filtro y compresión de audio; no reproduce exactamente el circuito de la cámara original.</p></div>
+<div class="settings"><div class="setting-head"><span>EFECTO VHS</span><strong id="strengthLabel">70%</strong></div><input id="strength" type="range" min="0" max="100" value="70"><div class="setting-head"><span>BIBLIOTECA DE FILTROS</span><strong id="filterName">E-240</strong></div><div class="preset-row" role="group" aria-label="Biblioteca de filtros"><button class="preset active" data-preset="classic"><span class="preset-name">E-240</span><span class="preset-desc">CINTA CLÁSICA</span></button><button class="preset" data-preset="washed"><span class="preset-name">HOME VIDEO</span><span class="preset-desc">CASERO / CÁLIDO</span></button><button class="preset" data-preset="noir"><span class="preset-name">NIGHT TAPE</span><span class="preset-desc">OSCURO / FRÍO</span></button><button class="preset" data-preset="clean"><span class="preset-name">CAMCORDER</span><span class="preset-desc">LIMPIO</span></button><button class="preset" data-preset="nightvision"><span class="preset-name">NIGHT VISION</span><span class="preset-desc">VISIÓN NOCTURNA</span></button><button class="preset" data-preset="nightvisionpro"><span class="preset-name">NIGHT VISION PRO</span><span class="preset-desc">IR / FÓSFORO VERDE</span></button></div><div id="proControls" class="pro-controls" hidden><div class="pro-title">NIGHT VISION PRO · AJUSTES FINOS</div>
+<div class="setting-head"><span>FÓSFORO IR</span><strong id="irLabel">85%</strong></div><input id="irStrength" type="range" min="0" max="100" value="85">
+<div class="setting-head"><span>HALO DE LUZ</span><strong id="bloomLabel">70%</strong></div><input id="bloomStrength" type="range" min="0" max="100" value="70">
+<div class="setting-head"><span>GANANCIA NOCTURNA</span><strong id="gainLabel">65%</strong></div><input id="gainStrength" type="range" min="0" max="100" value="65">
+</div><div class="toggles"><label><input id="dateToggle" type="checkbox" checked> FECHA</label><label><input id="linesToggle" type="checkbox" checked> SCANLINES</label><label><input id="noiseToggle" type="checkbox" checked> RUIDO</label></div></div></section><button id="flipBtn" class="icon-btn" title="Cambiar cámara" aria-label="Cambiar cámara">↻</button><input id="mediaPicker" type="file" accept="image/*,video/*" multiple><section id="editorPanel"><h3>EDITOR AUTOMÁTICO</h3><p>Selecciona varios clips desde Importar. Esta zona prepara una selección; la unión y exportación de un video final necesita procesamiento adicional compatible con iOS.</p><button id="chooseEditorMedia" class="tool-btn">SELECCIONAR CLIPS</button><div id="editorFiles"></div></section><section id="libraryPanel"><h3>BIBLIOTECA</h3><p>Selecciona fotos o videos del iPhone para revisarlos aquí o volver a aplicarles el estilo VHS.</p><button id="chooseLibraryMedia" class="tool-btn">IMPORTAR CONTENIDO</button><div id="libraryFiles"></div></section><nav class="bottom-nav" aria-label="Secciones"><button id="editorTab" type="button">▱<small>EDITOR</small></button><button id="cameraTab" class="active" type="button">▣<small>CÁMARA</small></button><button id="libraryTab" type="button">▣<small>BIBLIOTECA</small></button></nav><footer>VHS CAMERA LAB · FILTER LIBRARY <span>v0.8</span></footer><div id="frontFlash" class="flash-screen" aria-hidden="true"></div>
+</main><div id="toast" role="status"></div>
+<script>
+(()=>{
+'use strict';
+const video=document.querySelector('#sourceVideo'),canvas=document.querySelector('#outputCanvas'),ctx=canvas.getContext('2d',{alpha:false}),permission=document.querySelector('#permissionMessage'),startBtn=document.querySelector('#startBtn'),recordBtn=document.querySelector('#recordBtn'),statusText=document.querySelector('#statusText'),timer=document.querySelector('#timer'),recBadge=document.querySelector('#recBadge'),strength=document.querySelector('#strength'),strengthLabel=document.querySelector('#strengthLabel'),dateToggle=document.querySelector('#dateToggle'),linesToggle=document.querySelector('#linesToggle'),noiseToggle=document.querySelector('#noiseToggle'),recordLabel=document.querySelector('#recordLabel');
+let stream=null,recorder=null,chunks=[],recording=false,startedAt=0,timerHandle=null,facing='environment',preset='classic',raf=0,lastNoiseAt=0,zoomFactor=1,flashOn=false,currentDeviceId='',physicalZoomActive=false,selectedAspect='9:16',zoomHoldTimer=null,audioContext=null,audioSource=null,audioFilter=null,audioCompressor=null,audioDestination=null,audioStyle='normal',noiseCanvas=document.createElement('canvas'),noiseCtx,bloomCanvas=document.createElement('canvas'),bloomCtx;
+noiseCanvas.width=320;noiseCanvas.height=240;noiseCtx=noiseCanvas.getContext('2d');bloomCanvas.width=480;bloomCanvas.height=360;bloomCtx=bloomCanvas.getContext('2d');
+const presets={classic:{name:'E-240',sat:1.62,contrast:1.22,brightness:1.03,tint:'rgba(255,105,36,.18)'},washed:{name:'HOME VIDEO',sat:.62,contrast:.82,brightness:1.16,tint:'rgba(255,211,151,.22)'},noir:{name:'NIGHT TAPE',sat:.18,contrast:1.58,brightness:.68,tint:'rgba(38,63,112,.34)'},clean:{name:'CAMCORDER',sat:1,contrast:1.02,brightness:1,tint:'rgba(255,255,255,0)'},nightvision:{name:'NIGHT VISION',sat:0,contrast:1.72,brightness:1.3,tint:'rgba(40,255,90,.72)'},nightvisionpro:{name:'NIGHT VISION PRO',sat:0,contrast:1.58,brightness:1.18,tint:'rgba(10,255,65,.78)'}};
+const pad=n=>String(n).padStart(2,'0');
+function dateText(){const d=new Date();return `${['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'][d.getMonth()]}. ${pad(d.getDate())} ${d.getFullYear()}`}
+const dateStamp=document.querySelector('#dateStamp');
+function updateDateStamp(){if(!dateStamp)return;dateStamp.textContent=dateText();dateStamp.style.display=dateToggle.checked?'inline-block':'none'}
+function toast(message){const el=document.querySelector('#toast');el.textContent=message;el.classList.add('show');clearTimeout(toast._t);toast._t=setTimeout(()=>el.classList.remove('show'),2800)}
+async function startCamera(deviceId=null){
+ try{
+  if(!navigator.mediaDevices?.getUserMedia)throw new Error('Este navegador no permite acceder a la cámara. Abre el sitio mediante HTTPS en Safari.');
+  const attempts = deviceId
+   ? [
+      {audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false},video:{deviceId:{exact:deviceId}}},
+      {audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false},video:{facingMode:{ideal:facing}}},
+      {audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false},video:true}
+     ]
+   : [
+      {audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false},video:{facingMode:{ideal:facing},width:{ideal:1280},height:{ideal:960}}},
+      {audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false},video:{facingMode:{ideal:facing}}},
+      {audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false},video:true}
+     ];
+  let newStream=null,lastError=null;
+  for(const constraints of attempts){
+   try{newStream=await navigator.mediaDevices.getUserMedia(constraints);break}
+   catch(err){lastError=err}
+  }
+  if(!newStream)throw lastError||new Error('No se pudo iniciar la cámara.');
+  const oldStream=stream;
+  stream=newStream;
+  if(oldStream)oldStream.getTracks().forEach(t=>t.stop());
+  const track=stream.getVideoTracks()[0];
+  currentDeviceId=track?.getSettings?.().deviceId||deviceId||'';
+  video.srcObject=stream;
+  await video.play();
+  permission.classList.add('hidden');
+  statusText.textContent='CAM: ACTIVE';
+  canvas.width=video.videoWidth||1280;
+  canvas.height=video.videoHeight||960;
+  cancelAnimationFrame(raf);render();
+  if(!deviceId)toast('Cámara activada. Ajusta el efecto y pulsa REC.');
+ }catch(err){
+  const msg=(err&&err.name==='OverconstrainedError')?'Safari rechazó un ajuste de cámara. Se intentaron opciones compatibles; revisa los permisos y vuelve a intentarlo.':(err.message||'No se pudo abrir la cámara. Revisa los permisos del navegador.');
+  toast(msg);
+ }
+}
+function makeNoise(){const now=performance.now();if(now-lastNoiseAt<110)return;lastNoiseAt=now;const img=noiseCtx.createImageData(noiseCanvas.width,noiseCanvas.height);for(let i=0;i<img.data.length;i+=4){const v=Math.random()*255;img.data[i]=v;img.data[i+1]=v;img.data[i+2]=v;img.data[i+3]=255}noiseCtx.putImageData(img,0,0)}
+function render(){if(video.readyState>=2&&canvas.width){const w=canvas.width,h=canvas.height,amount=Number(strength.value)/100,p=presets[preset];ctx.save();ctx.filter=preset==='nightvisionpro'?`grayscale(1) saturate(0) contrast(${1+(p.contrast-1)*amount}) brightness(${1+(p.brightness-1)*amount})`:`saturate(${1+(p.sat-1)*amount}) contrast(${1+(p.contrast-1)*amount}) brightness(${1+(p.brightness-1)*amount})`;if(facing==='user'){ctx.translate(w,0);ctx.scale(-1,1)}const vw=video.videoWidth||w,vh=video.videoHeight||h;
+const targetRatio=w/h,sourceRatio=vw/vh;
+let sw,sh,sx,sy;
+if(sourceRatio>targetRatio){sh=vh;sw=vh*targetRatio;sx=(vw-sw)/2;sy=0}
+else{sw=vw;sh=vw/targetRatio;sx=0;sy=(vh-sh)/2}
+// Zoom recorta el centro de la imagen; nunca cambia su proporción.
+sw/=Math.max(.01,zoomFactor);sh/=Math.max(.01,zoomFactor);
+sx+=(vw-sw)/2-(vw-(sourceRatio>targetRatio?vh*targetRatio:vw))/2;
+sy+=(vh-sh)/2-(vh-(sourceRatio>targetRatio?vh:vw/targetRatio))/2;
+sx=Math.max(0,Math.min(vw-sw,sx));sy=Math.max(0,Math.min(vh-sh,sy));
+if(zoomFactor<1&&!physicalZoomActive){
+  const dw=w*zoomFactor,dh=h*zoomFactor;
+  ctx.fillStyle='#050607';ctx.fillRect(0,0,w,h);
+  ctx.drawImage(video,0,0,vw,vh,(w-dw)/2,(h-dh)/2,dw,dh);
+}else{
+  ctx.drawImage(video,sx,sy,sw,sh,0,0,w,h);
+}ctx.restore();
+// Color treatment only: deliberately no second shifted video layer, which caused a mirrored ghost on the selfie camera.
+if(amount>.01&&preset!=='clean'&&preset!=='nightvisionpro'){ctx.save();ctx.globalCompositeOperation='multiply';ctx.globalAlpha=amount;ctx.fillStyle=p.tint;ctx.fillRect(0,0,w,h);ctx.restore();
+if(preset==='washed'){ctx.save();const glow=ctx.createLinearGradient(0,0,w*.8,h);glow.addColorStop(0,'rgba(255,224,171,.22)');glow.addColorStop(.45,'rgba(255,224,171,0)');glow.addColorStop(1,'rgba(255,255,255,.05)');ctx.globalAlpha=amount;ctx.fillStyle=glow;ctx.fillRect(0,0,w,h);ctx.restore()}
+if(preset==='noir'){ctx.save();const v=ctx.createRadialGradient(w*.5,h*.45,Math.min(w,h)*.12,w*.5,h*.45,Math.max(w,h)*.72);v.addColorStop(0,'rgba(0,0,0,0)');v.addColorStop(1,`rgba(0,0,12,${.66*amount})`);ctx.fillStyle=v;ctx.fillRect(0,0,w,h);ctx.restore()}
+
+if(preset==='nightvision'||preset==='nightvisionpro'){ctx.save();ctx.globalCompositeOperation='screen';ctx.globalAlpha=(preset==='nightvisionpro'?.34:.16)*amount;ctx.fillStyle=preset==='nightvisionpro'?'#29ff63':'#37ff73';ctx.fillRect(0,0,w,h);ctx.restore();if(preset!=='nightvisionpro'){const nv=ctx.createRadialGradient(w*.5,h*.48,Math.min(w,h)*.12,w*.5,h*.48,Math.max(w,h)*.74);nv.addColorStop(0,'rgba(0,0,0,0)');nv.addColorStop(1,`rgba(0,15,3,${.62*amount})`);ctx.save();ctx.fillStyle=nv;ctx.fillRect(0,0,w,h);ctx.restore()}}}
+if(preset==='nightvisionpro'){
+// Phosphor-green monochrome: tint by luminance instead of laying a flat green wash over the image.
+ctx.save();ctx.globalCompositeOperation='color';ctx.globalAlpha=(Number(irStrength.value)/100)*amount;ctx.fillStyle='#8dffb0';ctx.fillRect(0,0,w,h);ctx.restore();
+// Slight green lift in the shadows, but keep the deepest blacks nearly black.
+ctx.save();ctx.globalCompositeOperation='screen';ctx.globalAlpha=(Number(gainStrength.value)/100)*.22*amount;ctx.fillStyle='#1cff58';ctx.fillRect(0,0,w,h);ctx.restore();
+// Soft optical bloom around bright areas, similar to an analog IR night-vision lens.
+bloomCtx.clearRect(0,0,bloomCanvas.width,bloomCanvas.height);bloomCtx.filter=`blur(${3+Number(bloomStrength.value)*.11}px) brightness(${1.15+Number(bloomStrength.value)/100*1.5})`;bloomCtx.drawImage(canvas,0,0,bloomCanvas.width,bloomCanvas.height);bloomCtx.filter='none';
+ctx.save();ctx.globalCompositeOperation='screen';ctx.globalAlpha=(Number(bloomStrength.value)/100)*.62*amount;ctx.drawImage(bloomCanvas,0,0,w,h);ctx.restore();
+// Gentle dark-green vignette, stronger at the corners than the center.
+const proVignette=ctx.createRadialGradient(w*.5,h*.47,Math.min(w,h)*.13,w*.5,h*.47,Math.max(w,h)*.72);
+proVignette.addColorStop(0,'rgba(0,10,3,0)');proVignette.addColorStop(.55,'rgba(0,12,4,.16)');proVignette.addColorStop(1,`rgba(0,5,2,${.88*amount})`);
+ctx.save();ctx.fillStyle=proVignette;ctx.fillRect(0,0,w,h);ctx.restore();
+}
+if(linesToggle.checked&&amount>.02){ctx.save();ctx.globalAlpha=(preset==='clean'?.08:(preset==='nightvisionpro'?.25:(preset==='nightvision'?.34:.23)))*amount;ctx.fillStyle='#080808';const gap=Math.max(3,Math.round(h/240));for(let y=0;y<h;y+=gap)ctx.fillRect(0,y,w,Math.max(1,gap*.42));ctx.restore()}
+if(noiseToggle.checked&&amount>.02){makeNoise();ctx.save();ctx.globalAlpha=(preset==='clean'?.07:(preset==='nightvisionpro'?.38:(preset==='nightvision'?.32:.24)))*amount;ctx.globalCompositeOperation='soft-light';ctx.drawImage(noiseCanvas,0,0,w,h);ctx.restore()}
+if(amount>.2&&preset!=='clean'){ctx.save();ctx.globalAlpha=(preset==='noir'?.22:(preset==='nightvisionpro'?.16:(preset==='nightvision'?.12:.14)))*amount;ctx.fillStyle=preset==='noir'?'#8caeff':((preset==='nightvision'||preset==='nightvisionpro')?'#72ff91':'#ff3e63');const y=(Date.now()/43)%h;ctx.fillRect(0,y,w,Math.max(1,h*.003));if(Math.random()<(preset==='nightvisionpro'?.006:.018)*amount){const gy=Math.random()*h;ctx.fillStyle='#e8f6ff';ctx.globalAlpha=.09;ctx.fillRect(0,gy,w,Math.max(1,h*.025))}ctx.restore()}
+}
+raf=requestAnimationFrame(render)}
+function formatTime(ms){const s=Math.floor(ms/1000);return `${pad(Math.floor(s/3600))}:${pad(Math.floor((s%3600)/60))}:${pad(s%60)}`}
+async function deliverBlob(blob,filename,successMessage){
+// iOS Safari is more reliable with the native share sheet than a blob download that navigates away from the page.
+try{if(typeof File!=='undefined'&&navigator.share&&navigator.canShare){const file=new File([blob],filename,{type:blob.type||'application/octet-stream'});if(navigator.canShare({files:[file]})){await navigator.share({files:[file],title:filename});toast(successMessage+' Usa “Guardar vídeo” o “Guardar imagen” si aparece en Compartir.');return}}}catch(err){if(err&&err.name==='AbortError'){toast('Compartir cancelado. La cámara sigue lista.');return}}
+const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=filename;a.style.display='none';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),120000);toast(successMessage+' Revisa Archivos/Descargas.');
+}
+async function startRecording(){if(!stream){await startCamera();if(!stream)return}if(!canvas.captureStream||!window.MediaRecorder){toast('Este navegador no admite grabar el efecto. Prueba Safari actualizado.');return}try{const canvasStream=canvas.captureStream(30);const audioTrack=stream.getAudioTracks()[0];if(audioTrack){let trackToRecord=audioTrack;try{audioContext=audioContext||new (window.AudioContext||window.webkitAudioContext)();if(audioContext.state==='suspended')await audioContext.resume();audioSource=audioContext.createMediaStreamSource(new MediaStream([audioTrack]));audioDestination=audioContext.createMediaStreamDestination();if(audioStyle==='dcr'){audioFilter=audioContext.createBiquadFilter();audioFilter.type='lowpass';audioFilter.frequency.value=3800;audioFilter.Q.value=.7;audioCompressor=audioContext.createDynamicsCompressor();audioCompressor.threshold.value=-24;audioCompressor.knee.value=20;audioCompressor.ratio.value=3.5;audioCompressor.attack.value=.004;audioCompressor.release.value=.18;audioSource.connect(audioFilter);audioFilter.connect(audioCompressor);audioCompressor.connect(audioDestination)}else{audioSource.connect(audioDestination)}trackToRecord=audioDestination.stream.getAudioTracks()[0]}catch(err){console.warn('Audio Web Audio no disponible:',err);toast('Se usará el micrófono directo.');trackToRecord=audioTrack}canvasStream.addTrack(trackToRecord)}else{toast('No se detectó micrófono. Revisa el permiso de audio de Safari.')}const mime=['video/mp4;codecs=h264,aac','video/mp4','video/webm;codecs=vp9,opus','video/webm;codecs=vp8,opus','video/webm'].find(t=>MediaRecorder.isTypeSupported(t));recorder=new MediaRecorder(canvasStream,mime?{mimeType:mime}:undefined);chunks=[];recorder.ondataavailable=e=>{if(e.data&&e.data.size)chunks.push(e.data)};recorder.onstop=()=>{const blob=new Blob(chunks,{type:recorder.mimeType||'video/webm'});const ext=blob.type.includes('mp4')?'mp4':'webm';deliverBlob(blob,`VHS_E240_${Date.now()}.${ext}`,'Grabación lista.');canvasStream.getTracks().forEach(t=>t.stop());chunks=[]};recorder.start(500);recording=true;startedAt=Date.now();recordBtn.classList.add('recording');recBadge.classList.add('live');recordLabel.textContent='GRABANDO · PULSA PARA DETENER';statusText.textContent='CAM: RECORDING';timerHandle=setInterval(()=>timer.textContent=formatTime(Date.now()-startedAt),250)}catch(e){toast('No se pudo iniciar la grabación: '+e.message)}}
+function stopRecording(){if(recorder&&recording){recorder.stop();recording=false;clearInterval(timerHandle);recordBtn.classList.remove('recording');recBadge.classList.remove('live');statusText.textContent='CAM: ACTIVE';recordLabel.textContent='PULSA PARA GRABAR'}}
+startBtn.addEventListener('click',startCamera);recordBtn.addEventListener('click',()=>recording?stopRecording():startRecording());document.querySelector('#flipBtn').addEventListener('click',async()=>{if(flashOn){try{await setFlash(false)}catch(e){}}facing=facing==='environment'?'user':'environment';zoomFactor=1;physicalZoomActive=false;document.querySelectorAll('[data-zoom]').forEach(b=>b.classList.toggle('active',b.dataset.zoom==='1'));await startCamera();if(facing==='environment'){frontFlash.classList.remove('on');flashOn=false;flashBtn.textContent='⚡ FLASH APAGADO';flashBtn.classList.remove('active')}else{flashNote.textContent='En cámara frontal, el botón activa una luz blanca de pantalla.'}});strength.addEventListener('input',()=>{strengthLabel.textContent=strength.value+'%'});const filterName=document.querySelector('#filterName');const proControls=document.querySelector('#proControls'),irStrength=document.querySelector('#irStrength'),bloomStrength=document.querySelector('#bloomStrength'),gainStrength=document.querySelector('#gainStrength');document.querySelectorAll('.preset').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.preset').forEach(b=>b.classList.remove('active'));btn.classList.add('active');preset=btn.dataset.preset;filterName.textContent=presets[preset].name;proControls.hidden=preset!=='nightvisionpro';if(preset==='nightvision')toast('NIGHT VISION activado · efecto verde de visión nocturna.');if(preset==='nightvisionpro')toast('NIGHT VISION PRO activado · fósforo verde, contraste y viñeta intensos.')}));
+function updateProLabels(){document.querySelector('#irLabel').textContent=irStrength.value+'%';document.querySelector('#bloomLabel').textContent=bloomStrength.value+'%';document.querySelector('#gainLabel').textContent=gainStrength.value+'%'}[irStrength,bloomStrength,gainStrength].forEach(el=>el.addEventListener('input',updateProLabels));updateProLabels();
+const flashBtn=document.querySelector('#flashBtn'),flashNote=document.querySelector('#flashNote'),frontFlash=document.querySelector('#frontFlash');
+async function setFlash(enabled){
+ if(!stream){toast('Enciende la cámara antes de usar el flash.');return}
+ if(facing==='user'){
+  flashOn=enabled;frontFlash.classList.toggle('on',enabled);flashBtn.classList.toggle('active',enabled);flashBtn.setAttribute('aria-pressed',String(enabled));flashBtn.textContent=enabled?'☼ LUZ DE PANTALLA ON':'⚡ FLASH APAGADO';flashNote.textContent='La cámara frontal usa la pantalla blanca como luz auxiliar; no es el flash LED trasero.';return;
+ }
+ const track=stream.getVideoTracks()[0];
+ try{
+  if(!track)throw new Error('No se encontró la pista de cámara.');
+  const caps=track.getCapabilities?track.getCapabilities():{};
+  if(!('torch' in caps))throw new Error('La pista de cámara no expone la función torch.');
+  await track.applyConstraints({advanced:[{torch:!!enabled}]});
+  const settings=track.getSettings?track.getSettings():{};
+  if(settings.torch===false&&enabled)throw new Error('La cámara no confirmó que la luz esté encendida.');
+  flashOn=enabled;flashBtn.classList.toggle('active',enabled);flashBtn.setAttribute('aria-pressed',String(enabled));flashBtn.textContent=enabled?'⚡ FLASH ENCENDIDO':'⚡ FLASH APAGADO';flashNote.textContent=enabled?'El navegador aceptó la orden de encender el LED. Comprueba físicamente la luz.':'Luz LED apagada.';
+ }catch(e){flashOn=false;flashBtn.classList.remove('active');flashBtn.setAttribute('aria-pressed','false');flashBtn.textContent='⚡ LED NO DISPONIBLE';flashNote.textContent='Safari/iOS no expone el control del LED para esta cámara. Prueba abrir la app desde Safari y permitir la cámara; no se mostrará como encendido si el navegador no acepta la orden.';toast('El control del LED no está disponible para esta cámara en Safari.');}
+}
+flashBtn.addEventListener('click',()=>setFlash(!flashOn));
+async function chooseZoom(target,btn){
+ if(!stream){zoomFactor=target;physicalZoomActive=false;document.querySelectorAll('[data-zoom]').forEach(b=>b.classList.toggle('active',b===btn));toast('Zoom '+target+'× preparado. Enciende la cámara para aplicarlo.');return}
+ if(recording){toast('Detén la grabación antes de cambiar de lente.');return}
+ const note=document.querySelector('#zoomNote');const track=stream.getVideoTracks()[0];
+ // First try native camera zoom, if exposed by Safari.
+ try{
+  const caps=track?.getCapabilities?.();
+  if(caps?.zoom && target>=caps.zoom.min && target<=caps.zoom.max){await track.applyConstraints({advanced:[{zoom:target}]});zoomFactor=1;physicalZoomActive=true;note.textContent='Zoom nativo de cámara activo ('+target+'×).';document.querySelectorAll('[data-zoom]').forEach(b=>b.classList.toggle('active',b===btn));toast('Zoom nativo '+target+'×');return}
+ }catch(e){}
+ // On rear camera, try selecting an exposed physical camera whose label matches the requested field of view.
+ if(facing==='environment' && (target===0.5||target===1||target===2)){
+  try{
+   const devices=await navigator.mediaDevices.enumerateDevices();const cams=devices.filter(d=>d.kind==='videoinput'&&d.deviceId);
+   const current=track?.getSettings?.().deviceId||currentDeviceId;
+   const label=d=>(d.label||'').toLowerCase();
+   let candidate=null;
+   if(target===0.5)candidate=cams.find(d=>/ultra.?wide|ultrawide|0\.5|0,5|super.?wide/.test(label(d)));
+   if(target===2)candidate=cams.find(d=>/telephoto|telephoto|2x|2\.0|telephoto|back.*tele/.test(label(d)));
+   if(target===1)candidate=cams.find(d=>/back camera|rear camera|wide camera|main camera/.test(label(d))&&!/ultra|tele|front/.test(label(d)));
+   if(candidate&&candidate.deviceId!==current){const oldFlash=flashOn;if(oldFlash)await setFlash(false);await startCamera(candidate.deviceId);if(stream){zoomFactor=1;physicalZoomActive=true;note.textContent='Cámara física seleccionada: '+(candidate.label||'lente trasera')+'.';document.querySelectorAll('[data-zoom]').forEach(b=>b.classList.toggle('active',b===btn));toast('Lente disponible seleccionado para '+target+'×');return}}
+  }catch(e){}
+ }
+ // Safe fallback: processed-image crop for telephoto-style magnification, or padded frame for 0.5×.
+ zoomFactor=target;physicalZoomActive=false;document.querySelectorAll('[data-zoom]').forEach(b=>b.classList.toggle('active',b===btn));
+ if(target===0.5){note.textContent='No se detectó una lente ultra gran angular seleccionable. Se usa encuadre simulado 0.5×; no amplía el campo óptico real.';toast('0.5× simulado: Safari no expuso una lente ultra gran angular seleccionable.')}else{note.textContent='No se pudo seleccionar un lente físico para '+target+'×; se usa zoom digital.';toast('Zoom digital '+target+'×')}
+}
+// Smooth press-and-hold zoom, with a gentle ramp from 0.5× to 5×. Safari's physical lens/zoom API is used where exposed; otherwise the canvas zoom remains smooth.
+const zoomOutBtn=document.querySelector('#zoomOut'),zoomInBtn=document.querySelector('#zoomIn');
+function stopZoomHold(){if(zoomHoldTimer){clearInterval(zoomHoldTimer);zoomHoldTimer=null}}
+function zoomStep(dir){zoomFactor=Math.max(.5,Math.min(5,zoomFactor+dir*(zoomFactor<1?-.025:.035)));physicalZoomActive=false;const note=document.querySelector('#zoomNote');if(note)note.textContent='Zoom '+zoomFactor.toFixed(2)+'× · zoom fluido; el cambio de lente físico depende de los controles que exponga Safari.';}
+function beginZoomHold(dir){stopZoomHold();zoomStep(dir);zoomHoldTimer=setInterval(()=>zoomStep(dir),35)}
+for(const [btn,dir] of [[zoomOutBtn,-1],[zoomInBtn,1]]){btn.addEventListener('pointerdown',e=>{e.preventDefault();beginZoomHold(dir)});['pointerup','pointercancel','pointerleave'].forEach(ev=>btn.addEventListener(ev,stopZoomHold));btn.addEventListener('click',()=>{if(!zoomHoldTimer)zoomStep(dir)})}
+
+document.querySelector('#snapshotBtn').addEventListener('click',()=>{if(!stream){toast('Enciende la cámara primero.');return}canvas.toBlob(async blob=>{if(!blob){toast('No se pudo guardar la foto.');return}await deliverBlob(blob,`VHS_foto_${Date.now()}.jpg`,'Foto lista.')},'image/jpeg',.92)});dateToggle.checked=false;dateToggle.disabled=true;dateToggle.addEventListener('change',updateDateStamp);if(dateStamp)updateDateStamp();document.querySelector('#audioStyleSelect').addEventListener('change',e=>{audioStyle=e.target.value;toast(audioStyle==='dcr'?'Audio Sony DCR-TRV351 simulado seleccionado.':'Micrófono normal seleccionado.');});document.querySelector('#galleryBtn').addEventListener('click',()=>toast('Tus fotos y vídeos se guardan mediante Compartir o en Archivos/Descargas.'));
+const formatBtn=document.querySelector('#formatBtn'),formatSelect=document.querySelector('#formatSelect'),viewfinder=document.querySelector('.viewfinder'),mediaPicker=document.querySelector('#mediaPicker');
+formatBtn.addEventListener('click',()=>{formatSelect.hidden=!formatSelect.hidden});
+function applyFormat(val){selectedAspect=val;formatBtn.textContent=val+' ▾';const ratios={'9:16':9/16,'3:4':3/4,'4:3':4/3,'16:9':16/9,'1:1':1,'2.39:1':2.39};const ratio=ratios[val]||9/16;viewfinder.style.aspectRatio=String(ratio);const base=960;canvas.width=ratio<1?Math.round(base*ratio):base;canvas.height=ratio<1?base:Math.round(base/ratio);formatSelect.hidden=true;if(typeof drawFrame==='function')drawFrame();}
+formatSelect.addEventListener('change',()=>applyFormat(formatSelect.value));applyFormat('9:16');
+const editorPanel=document.querySelector('#editorPanel'),libraryPanel=document.querySelector('#libraryPanel'),cameraControls=document.querySelector('.controls'),viewWrap=document.querySelector('.view-wrap');
+function showSection(which){editorPanel.classList.toggle('active',which==='editor');libraryPanel.classList.toggle('active',which==='library');cameraControls.style.display=which==='camera'?'':'none';viewWrap.style.display=which==='camera'?'':'none';document.querySelectorAll('.bottom-nav button').forEach(b=>b.classList.remove('active'));document.querySelector('#'+which+'Tab').classList.add('active');}
+document.querySelector('#cameraTab').addEventListener('click',()=>showSection('camera'));
+document.querySelector('#editorTab').addEventListener('click',()=>showSection('editor'));
+document.querySelector('#libraryTab').addEventListener('click',()=>showSection('library'));
+document.querySelector('#importBtn').addEventListener('click',()=>mediaPicker.click());
+document.querySelector('#chooseEditorMedia').addEventListener('click',()=>mediaPicker.click());
+document.querySelector('#chooseLibraryMedia').addEventListener('click',()=>mediaPicker.click());
+mediaPicker.addEventListener('change',()=>{const files=[...mediaPicker.files];const summary=files.map(f=>f.name+' · '+(f.type||'archivo')).join('\n');document.querySelector('#editorFiles').textContent=summary||'No hay clips seleccionados.';document.querySelector('#libraryFiles').textContent=summary||'No hay contenido seleccionado.';if(files.length){showSection('editor');toast(files.length+' archivo(s) seleccionado(s). La unión/exportación automática todavía requiere un módulo de edición de video.');}});
+
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&recording)stopRecording()});
+})();
+</script>
+</body>
+</html>
